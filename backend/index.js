@@ -30,7 +30,10 @@ app.post("/leads", async (req, res) => {
 // GET
 app.get("/leads", async (req, res) => {
   try {
-    const data = await Lead.find().populate("salesAgent", "name");
+    const filters = {};
+    if (req.query.status) filters.status = req.query.status;
+
+    const data = await Lead.find(filters).populate("salesAgent", "name");
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch the leads." });
