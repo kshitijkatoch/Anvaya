@@ -16,13 +16,92 @@ app.use(express.json());
 initializeDatabase();
 
 // ===== Lead Routes ===== //
+
+const validSources = Lead.schema.path("source").enumValues;
+const validStatuses = Lead.schema.path("status").enumValues;
+const validPriorities = Lead.schema.path("priority").enumValues;
+
+// GEt enums
+app.get("/leads/enums", (req, res) => {
+  res.json({
+    sources: validSources,
+    statuses: validStatuses,
+    priorities: validPriorities,
+  });
+});
+
 // POST
 app.post("/leads", async (req, res) => {
   try {
     const body = Array.isArray(req.body) ? req.body : [req.body];
-    const data = await Lead.insertMany(body);
+
+    const leadsToInsert = [];
+
+    for (const data of body) {
+      const {
+        name,
+        source,
+        salesAgent,
+        status = "New",
+        tags = [],
+        timeToClose,
+        priority = "Medium",
+      } = data;
+
+      // Basic validations
+      if (!name)
+        return res
+          .status(400)
+          .json({ error: "Invalid input: 'name' is required." });
+      if (!source || !validSources.includes(source))
+        return res.status(400).json({
+          error: `Invalid input: 'source' must be one of ${validSources.join(
+            ", "
+          )}.`,
+        });
+      if (!salesAgent || !mongoose.Types.ObjectId.isValid(salesAgent))
+        return res.status(400).json({
+          error: "Invalid input: 'salesAgent' must be a valid ObjectId.",
+        });
+      if (!timeToClose || timeToClose <= 0)
+        return res.status(400).json({
+          error: "Invalid input: 'timeToClose' must be a positive integer.",
+        });
+      if (!validStatuses.includes(status))
+        return res.status(400).json({
+          error: `Invalid input: 'status' must be one of ${validStatuses.join(
+            ", "
+          )}.`,
+        });
+      if (!validPriorities.includes(priority))
+        return res.status(400).json({
+          error: `Invalid input: 'priority' must be one of ${validPriorities.join(
+            ", "
+          )}.`,
+        });
+
+      // Check if sales agent exists
+      const agent = await SalesAgent.findById(salesAgent);
+      if (!agent)
+        return res
+          .status(404)
+          .json({ error: `Sales agent with ID '${salesAgent}' not found.` });
+
+      leadsToInsert.push({
+        name,
+        source,
+        salesAgent,
+        status,
+        tags,
+        timeToClose,
+        priority,
+      });
+    }
+
+    const data = await Lead.insertMany(leadsToInsert);
     res.status(201).json({ message: "Leads added successfully", leads: data });
   } catch (error) {
+    console.error("Error creating leads:", error);
     res.status(500).json({ error: "Failed to add the leads." });
   }
 });
@@ -30,15 +109,70 @@ app.post("/leads", async (req, res) => {
 // GET
 app.get("/leads", async (req, res) => {
   try {
-    const filters = {};
-    if (req.query.status) filters.status = req.query.status;
+    const { salesAgent, status, tags, source } = req.query;
 
-    const data = await Lead.find(filters).populate("salesAgent", "name");
-    res.json(data);
+    const filters = {};
+
+    if (salesAgent) {
+      if (!mongoose.Types.ObjectId.isValid(salesAgent)) {
+        return res.status(400).json({
+          error: "Invalid input: 'salesAgent' must be a valid ObjectId.",
+        });
+      }
+      filters.salesAgent = salesAgent;
+    }
+
+    if (status) {
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+          error: `Invalid input: 'status' must be one of ${validStatuses.join(
+            ", "
+          )}.`,
+        });
+      }
+      filters.status = status;
+    }
+
+    if (source) {
+      if (!validSources.includes(source)) {
+        return res.status(400).json({
+          error: `Invalid input: 'source' must be one of ${validSources.join(
+            ", "
+          )}.`,
+        });
+      }
+      filters.source = source;
+    }
+
+    if (tags) {
+      // Allow comma-separated tags (e.g., ?tags=High%20Value,Follow-up)
+      const tagArray = tags.split(",").map((t) => t.trim());
+      filters.tags = { $all: tagArray };
+    }
+
+    // Fetch leads with applied filters
+    const leads = await Lead.find(filters)
+      .populate("salesAgent", "name")
+      .sort({ createdAt: -1 }); // optional: show recent first
+
+    res.status(200).json(leads);
   } catch (error) {
+    console.error("Error fetching leads:", error);
     res.status(500).json({ error: "Failed to fetch the leads." });
   }
 });
+
+// app.get("/leads", async (req, res) => {
+//   try {
+//     const filters = {};
+//     if (req.query.status) filters.status = req.query.status;
+
+//     const data = await Lead.find(filters).populate("salesAgent", "name");
+//     res.json(data);
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to fetch the leads." });
+//   }
+// });
 
 // GET by id
 app.get("/leads/:id", async (req, res) => {
@@ -54,30 +188,133 @@ app.get("/leads/:id", async (req, res) => {
 });
 
 // Update
-app.post("/api/leads/:id", async (req, res) => {
+// ===== UPDATE Lead ===== //
+app.put("/leads/:id", async (req, res) => {
   try {
-    const updatedLead = await Lead.findByIdAndUpdate(req.params.id, req.body, {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid Lead ID." });
+    }
+
+    const { name, source, salesAgent, status, tags, timeToClose, priority } =
+      req.body;
+
+    const updateData = {};
+
+    if (name) updateData.name = name;
+
+    if (source) {
+      if (!validSources.includes(source)) {
+        return res.status(400).json({
+          error: `Invalid input: 'source' must be one of ${validSources.join(
+            ", "
+          )}.`,
+        });
+      }
+      updateData.source = source;
+    }
+
+    if (salesAgent) {
+      if (!mongoose.Types.ObjectId.isValid(salesAgent)) {
+        return res.status(400).json({
+          error: "Invalid input: 'salesAgent' must be a valid ObjectId.",
+        });
+      }
+      const agentExists = await SalesAgent.findById(salesAgent);
+      if (!agentExists) {
+        return res
+          .status(404)
+          .json({ error: `Sales agent with ID '${salesAgent}' not found.` });
+      }
+      updateData.salesAgent = salesAgent;
+    }
+
+    if (status) {
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+          error: `Invalid input: 'status' must be one of ${validStatuses.join(
+            ", "
+          )}.`,
+        });
+      }
+      updateData.status = status;
+    }
+
+    if (priority) {
+      if (!validPriorities.includes(priority)) {
+        return res.status(400).json({
+          error: `Invalid input: 'priority' must be one of ${validPriorities.join(
+            ", "
+          )}.`,
+        });
+      }
+      updateData.priority = priority;
+    }
+
+    if (tags) {
+      if (!Array.isArray(tags)) {
+        return res.status(400).json({
+          error: "Invalid input: 'tags' must be an array of strings.",
+        });
+      }
+      updateData.tags = tags;
+    }
+
+    if (timeToClose !== undefined) {
+      if (typeof timeToClose !== "number" || timeToClose <= 0) {
+        return res.status(400).json({
+          error: "Invalid input: 'timeToClose' must be a positive number.",
+        });
+      }
+      updateData.timeToClose = timeToClose;
+    }
+
+    // Perform update
+    const updatedLead = await Lead.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
     }).populate("salesAgent", "name");
 
-    updatedLead
-      ? res.json({
-          message: "Lead updated successfully",
-          lead: updatedLead,
-        })
-      : res.status(404).json({ error: "Lead not found." });
+    if (!updatedLead) {
+      return res.status(404).json({ error: "Lead not found." });
+    }
+
+    res.status(200).json({
+      message: "Lead updated successfully",
+      lead: updatedLead,
+    });
   } catch (error) {
+    console.error("Error updating lead:", error);
     res.status(500).json({ error: "Failed to update lead." });
   }
 });
+
+// app.post("/leads/:id", async (req, res) => {
+//   try {
+//     const updatedLead = await Lead.findByIdAndUpdate(req.params.id, req.body, {
+//       new: true,
+//       runValidators: true,
+//     }).populate("salesAgent", "name");
+
+//     updatedLead        ? res.json({
+//           message: "Lead updated successfully",
+//           lead: updatedLead,
+//         })
+//       : res.status(404).json({ error: "Lead not found." });
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to update lead." });
+//   }
+// });
 
 // DELETE by id
 app.delete("/leads/:id", async (req, res) => {
   try {
     const data = await Lead.findByIdAndDelete(req.params.id);
     data
-      ? res.json({ message: "Lead deleted successfully.", deleted: data })
+      ? res
+          .status(200)
+          .json({ message: "Lead deleted successfully.", deleted: data })
       : res.status(404).json({ error: "Lead not found." });
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch the lead." });
