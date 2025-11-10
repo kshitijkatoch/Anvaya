@@ -1,0 +1,9 @@
+.btn-sidebar:hover {
+  background-color: #313131;
+  font-weight: bold;
+  color: #fff;
+}
+
+.fw-bold-hover:hover {
+  font-weight: bold;
+}
