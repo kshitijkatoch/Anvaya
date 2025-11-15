@@ -392,11 +392,14 @@ app.post("/leads/:id/comments", async (req, res) => {
     const populated = await comment.populate("author", "name");
 
     res.status(201).json({
-      id: populated._id,
-      commentText: populated.commentText,
-      author: populated.author.name,
-      createdAt: populated.createdAt,
-    });
+  id: populated._id,
+  commentText: populated.commentText,
+  author: {
+    id: populated.author._id,
+    name: populated.author.name
+  },
+  createdAt: populated.createdAt,
+});
   } catch (err) {
     res.status(500).json({ error: "Failed to add comment." });
   }
@@ -421,13 +424,16 @@ app.get("/leads/:id/comments", async (req, res) => {
       .sort({ createdAt: -1 });
 
     res.status(200).json(
-      comments.map((c) => ({
-        id: c._id,
-        commentText: c.commentText,
-        author: c.author.name,
-        createdAt: c.createdAt,
-      }))
-    );
+  comments.map((c) => ({
+    id: c._id,
+    commentText: c.commentText,
+    author: {
+      id: c.author._id,
+      name: c.author.name
+    },
+    createdAt: c.createdAt,
+  }))
+);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch comments." });
   }
