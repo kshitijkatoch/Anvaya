@@ -3,16 +3,27 @@ const useFetch = (url, initialData = []) => {
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   useEffect(() => {
-    setLoading(true);
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(Array.isArray(data) ? data : []);
-      })
-      .catch((error) => setError(error.message))
-      .finally(() => setLoading(false));
+    if (!url) return;
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Failed to fetch");
+
+        const json = await res.json();
+        setData(Array.isArray(json) ? json : []);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [url]);
-  return { data, loading, error };
+  return { data, loading, error, setData };
 };
 export default useFetch;

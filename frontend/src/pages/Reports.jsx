@@ -8,7 +8,7 @@ function Reports() {
         <Header />
         <div className="row w-100">
           <Sidebar />
-          <div className="col-md-9 ps-0">
+          <div className="col-md-9 col-9 ps-0">
             <div className="d-flex justify-content-center">
               <h2 className="p-3">Reports</h2>
             </div>

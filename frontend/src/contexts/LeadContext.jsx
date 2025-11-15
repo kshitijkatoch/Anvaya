@@ -6,7 +6,7 @@ const LeadContext = createContext();
 
 export const LeadProvider = ({ children }) => {
   const [leads, setLeads] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("");
 
@@ -19,13 +19,14 @@ export const LeadProvider = ({ children }) => {
     const fetchLeads = async () => {
       setLoading(true);
       setError(null);
-      setLeads([]);
+      // setLeads([]);
 
       try {
         const url = filter
           ? `https://anvaya-brown.vercel.app/leads?status=${filter}`
           : `https://anvaya-brown.vercel.app/leads`;
         const res = await fetch(url);
+        if (!res.ok) throw new Error("Network response was not ok");
         const data = await res.json();
         setLeads(data);
       } catch (err) {
@@ -49,6 +50,8 @@ export const LeadProvider = ({ children }) => {
         leads,
         setLeads,
         agents,
+        agentsLoading: ll,
+        agentsError: el,
         loading,
         error,
         setFilter,

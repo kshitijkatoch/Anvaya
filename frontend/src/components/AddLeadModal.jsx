@@ -39,7 +39,6 @@ const AddLeadModal = ({ show, onClose }) => {
     if (show) fetchEnums();
   }, [show]);
 
-  console.log("Enums:", enums);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLead({ ...lead, [name]: value });

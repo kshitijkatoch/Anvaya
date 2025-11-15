@@ -7,11 +7,13 @@ import Leads from "./pages/Leads.jsx";
 import Sales from "./pages/Sales.jsx";
 import Agents from "./pages/Agents.jsx";
 import Reports from "./pages/Reports.jsx";
+import LeadDetails from "./pages/LeadDetails.jsx";
 import { LeadProvider } from "./contexts/LeadContext.jsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/leads", element: <Leads /> },
+  { path: "/leads/:id", element: <LeadDetails /> },
   { path: "/sales", element: <Sales /> },
   { path: "/agents", element: <Agents /> },
   { path: "/reports", element: <Reports /> },

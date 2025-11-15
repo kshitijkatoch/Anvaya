@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./App.css";
@@ -35,13 +36,15 @@ function App() {
                 {loading && <p>Loading...</p>}
                 {error && <p>Error loading data.</p>}
                 {leads?.map((l) => (
-                  <button
-                    key={l._id}
-                    className="btn btn-lg btn-outline-info"
-                    style={{ "--bs-btn-hover-color": "#fff" }}
-                  >
-                    {l.name}
-                  </button>
+                  <Link to={`/leads/${l._id}`}>
+                    <button
+                      key={l._id}
+                      className="btn btn-lg btn-outline-info"
+                      style={{ "--bs-btn-hover-color": "#fff" }}
+                    >
+                      {l.name}
+                    </button>
+                  </Link>
                 ))}
               </div>
               <hr />

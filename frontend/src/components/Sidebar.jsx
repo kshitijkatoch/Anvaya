@@ -6,8 +6,8 @@ const Sidebar = () => {
   const isDashboard = location.pathname === "/";
 
   return (
-    <div className="col-3 col-md-2">
-      <div className="bg-dark p-3 text-white" style={{ height: "100vh" }}>
+    <div className="sidebar col-3 col-md-2">
+      <div className="bg-dark p-3 text-white sidebar-height">
         <div className="d-flex flex-column gap-3">
           {isDashboard ? (
             <>

@@ -41,7 +41,7 @@ function Leads() {
         <Header />
         <div className="row w-100">
           <Sidebar />
-          <div className="col-9 col-md-10 ps-0">
+          <div className="col-md-9 col-9 ps-0">
             <div className="container d-flex flex-column justify-content-center">
               <h2 className="p-4 text-center">Lead Overview</h2>
               <div className="my-2">

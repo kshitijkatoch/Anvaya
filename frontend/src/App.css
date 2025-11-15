@@ -7,3 +7,29 @@
 .fw-bold-hover:hover {
   font-weight: bold;
 }
+
+/* Sidebar */
+.sidebar {
+  max-width: 226px;
+  min-height: 100vh; /* ensure it always covers full viewport height */
+  position: sticky; /* keeps it fixed while scrolling */
+  top: 0;
+}
+
+.sidebar-height {
+  height: 100vh; /* full height on desktop */
+  display: flex;
+  flex-direction: column;
+  justify-content: start; /* align nav items to top */
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    max-width: 95px;
+    min-height: 100vh;
+  }
+
+  .sidebar-height {
+    height: 100vh; /* keep full height even on mobile */
+  }
+}
