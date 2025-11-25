@@ -10,17 +10,17 @@
 
 /* Sidebar */
 .sidebar {
-  max-width: 226px;
-  min-height: 100vh; /* ensure it always covers full viewport height */
-  position: sticky; /* keeps it fixed while scrolling */
-  top: 0;
+  max-width: 205px;
+  min-height: 100%;
+  position: sticky; 
 }
 
 .sidebar-height {
-  height: 100vh; /* full height on desktop */
+  min-height: 89vh;
+  height: 100%;  
   display: flex;
   flex-direction: column;
-  justify-content: start; /* align nav items to top */
+  justify-content: start; 
 }
 
 @media (max-width: 768px) {
@@ -30,6 +30,12 @@
   }
 
   .sidebar-height {
-    height: 100vh; /* keep full height even on mobile */
+     min-height: 89vh;
+  height: 100%;  
   }
+}
+
+
+.mw-700{
+  max-width: 800px;
 }

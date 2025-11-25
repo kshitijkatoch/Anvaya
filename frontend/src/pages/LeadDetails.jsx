@@ -69,8 +69,6 @@ const [author, setAuthor] = useState("68f23b7fc4f7e63f4528c4fe");
   }
 };
 
-
-
   return (
     <>
       <main>
@@ -78,11 +76,11 @@ const [author, setAuthor] = useState("68f23b7fc4f7e63f4528c4fe");
         <div className="row w-100">
           <Sidebar />
           <div className="col-md-10 col-9 ps-0">
-            <div className="container d-flex flex-column justify-content-center">
+            <div className="container mw-700 d-flex flex-column justify-content-center">
               <h2 className="p-3 text-center">Lead Details</h2>
 
               {/* Lead Details */}
-              <ul className="list-group col-md-5 col-12">
+              <ul className="list-group">
                 <li className="list-group-item py-3">
                   <p className="m-0">
                     <b>Lead Name:</b> {name}

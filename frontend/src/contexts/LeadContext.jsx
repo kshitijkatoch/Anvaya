@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import useFetch from "../useFetch";
 import AddLeadModal from "../components/AddLeadModal";
+import AddAgentModal from "../components/AddAgentModal";
 
 const LeadContext = createContext();
 
@@ -38,29 +39,52 @@ export const LeadProvider = ({ children }) => {
     fetchLeads();
   }, [filter]);
 
+  // Fetch Agents
   const {
-    data: agents = [],
-    loading: ll,
-    error: el,
+    data: agentsData = [],
+    loading: agentsLoading,
+    error: agentsError,
   } = useFetch("https://anvaya-brown.vercel.app/agents");
+
+  const [agents, setAgents] = useState([]);
+
+  useEffect(() => {
+    if (agentsData) setAgents(agentsData);
+  }, [agentsData]);
+
+  // Agents Modal
+  const [showAgentModal, setShowAgentModal] = useState(false);
+  const openAgentModal = () => setShowAgentModal(true);
+  const closeAgentModal = () => setShowAgentModal(false);
 
   return (
     <LeadContext.Provider
       value={{
+        // Leads
         leads,
         setLeads,
-        agents,
-        agentsLoading: ll,
-        agentsError: el,
         loading,
         error,
         setFilter,
+
+        // Agents
+        agents,
+        setAgents,
+        agentsLoading,
+        agentsError,
+
+        // Modals
         openLeadModal,
         closeLeadModal,
+        openAgentModal,
+        closeAgentModal,
       }}
     >
       {children}
+
+      {/* Modals */}
       <AddLeadModal show={showLeadModal} onClose={closeLeadModal} />
+      <AddAgentModal show={showAgentModal} onClose={closeAgentModal} />
     </LeadContext.Provider>
   );
 };

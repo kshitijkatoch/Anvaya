@@ -29,7 +29,7 @@ function App() {
         <div className="row w-100">
           <Sidebar />
           <div className="col-9 col-md-10 ps-0">
-            <div className="container d-flex flex-column justify-content-center">
+            <div className="container mw-700 d-flex flex-column justify-content-center">
               <h2 className="p-4 text-center">Main Content</h2>
               {/* Leads */}
               <div className="d-flex flex-wrap gap-3 my-2">

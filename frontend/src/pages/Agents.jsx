@@ -4,7 +4,7 @@ import LeadContext from "../contexts/LeadContext";
 import { useContext } from "react";
 
 function Agents() {
-  const { agents } = useContext(LeadContext);
+  const { agents, openAgentModal } = useContext(LeadContext);
   return (
     <>
       <main>
@@ -12,10 +12,10 @@ function Agents() {
         <div className="row w-100">
           <Sidebar />
           <div className="col-9 col-md-10 ps-0">
-            <div className="container d-flex flex-column justify-content-center">
+            <div className="container mw-700 d-flex flex-column justify-content-center">
               <h2 className="p-4 text-center">Sales Agent List</h2>
               <div className="my-2">
-                <ul className="list-group col-md-6">
+                <ul className="list-group">
                   {/* {loading && <p>Loading...</p>}
                   {error && <p>Error loading data.</p>} */}
                   {agents?.map((s) => (
@@ -38,7 +38,10 @@ function Agents() {
               </div>
               <div className="mt-2 d-flex flex-column gap-3">
                 <div className="d-flex justify-content-center">
-                  <button className="btn btn-primary btn-lg col-md-4 my-4">
+                  <button
+                    className="btn btn-primary btn-lg col-md-4 my-4"
+                    onClick={openAgentModal}
+                  >
                     Add New Agent
                   </button>
                 </div>

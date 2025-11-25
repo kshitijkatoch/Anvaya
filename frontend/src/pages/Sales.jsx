@@ -8,9 +8,9 @@ function Sales() {
         <Header />
         <div className="row w-100">
           <Sidebar />
-          <div className="col-md-9 col-9 ps-0">
-            <div className="d-flex justify-content-center">
-              <h2 className="p-3">Sales</h2>
+          <div className="col-9 col-md-10 ps-0">
+            <div className="container mw-700 d-flex flex-column justify-content-center">
+              <h2 className="p-3 text-center">Sales</h2>
             </div>
           </div>
         </div>

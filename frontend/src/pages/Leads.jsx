@@ -41,14 +41,14 @@ function Leads() {
         <Header />
         <div className="row w-100">
           <Sidebar />
-          <div className="col-md-9 col-9 ps-0">
-            <div className="container d-flex flex-column justify-content-center">
+          <div className="col-9 col-md-10 ps-0">
+            <div className="container mw-700 d-flex flex-column justify-content-center">
               <h2 className="p-4 text-center">Lead Overview</h2>
               <div className="my-2">
                 {loading && <p>Loading...</p>}
                 {error && <p>Error loading data.</p>}
 
-                <ul className="list-group col-md-5">
+                <ul className="list-group">
                   {filteredLeads.map((l) => (
                     <li key={l._id} className="list-group-item py-3">
                       <b>{l.name}</b> –{" "}
