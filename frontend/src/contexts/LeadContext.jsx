@@ -39,6 +39,20 @@ export const LeadProvider = ({ children }) => {
     fetchLeads();
   }, [filter]);
 
+  const newLeads = leads.reduce((s, l) => (l.status === "New" ? s + 1 : s), 0);
+  const contactedLeads = leads.reduce(
+    (s, l) => (l.status === "Contacted" ? s + 1 : s),
+    0
+  );
+  const qualifiedLeads = leads.reduce(
+    (s, l) => (l.status === "Qualified" ? s + 1 : s),
+    0
+  );
+  const closedLeads = leads.reduce(
+    (s, l) => (l.status === "Closed" ? s + 1 : s),
+    0
+  );
+
   // Fetch Agents
   const {
     data: agentsData = [],
@@ -57,6 +71,13 @@ export const LeadProvider = ({ children }) => {
   const openAgentModal = () => setShowAgentModal(true);
   const closeAgentModal = () => setShowAgentModal(false);
 
+  // Pipeline
+  const {
+    data: pipelineData,
+    loading: pipelineLoading,
+    error: pipelineError,
+  } = useFetch("https://anvaya-brown.vercel.app/report/pipeline");
+
   return (
     <LeadContext.Provider
       value={{
@@ -66,12 +87,19 @@ export const LeadProvider = ({ children }) => {
         loading,
         error,
         setFilter,
+        newLeads,
+        contactedLeads,
+        qualifiedLeads,
+        closedLeads,
 
         // Agents
         agents,
         setAgents,
         agentsLoading,
         agentsError,
+
+        // Pipeline
+        totalPipelineLeads: pipelineData?.totalPipelineLeads || 0,
 
         // Modals
         openLeadModal,

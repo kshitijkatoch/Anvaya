@@ -8,20 +8,19 @@ import Header from "./components/Header";
 import LeadContext from "./contexts/LeadContext";
 
 function App() {
-  const { leads, loading, error, setFilter, openLeadModal } =
-    useContext(LeadContext);
+  const {
+    leads,
+    loading,
+    error,
+    newLeads,
+    contactedLeads,
+    qualifiedLeads,
+    setFilter,
+    openLeadModal,
+  } = useContext(LeadContext);
   const [activeFilter, setActiveFilter] = useState("");
   const refreshLeads = () => setFilter(activeFilter);
 
-  const newLeads = leads.reduce((s, l) => (l.status === "New" ? s + 1 : s), 0);
-  const contactedLeads = leads.reduce(
-    (s, l) => (l.status === "Contacted" ? s + 1 : s),
-    0
-  );
-  const qualifiedLeads = leads.reduce(
-    (s, l) => (l.status === "Qualified" ? s + 1 : s),
-    0
-  );
   return (
     <>
       <main>

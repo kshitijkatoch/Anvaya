@@ -14,7 +14,8 @@ const useFetch = (url, initialData = []) => {
         if (!res.ok) throw new Error("Failed to fetch");
 
         const json = await res.json();
-        setData(Array.isArray(json) ? json : []);
+        // setData(Array.isArray(json) ? json : []);
+        setData(json);
       } catch (err) {
         setError(err.message);
       } finally {

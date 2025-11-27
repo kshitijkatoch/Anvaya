@@ -35,7 +35,7 @@ const AddAgentModal = ({ show, onClose }) => {
         return;
       }
 
-      const addedAgent = data.agents[0]; // ← Correct according to your API
+      const addedAgent = data.agents[0];
 
       // Update UI immediately
       setAgents((prev) => [addedAgent, ...prev]);
