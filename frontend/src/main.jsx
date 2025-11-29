@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
 import Leads from "./pages/Leads.jsx";
-import Sales from "./pages/Sales.jsx";
+import Status from "./pages/Status.jsx";
 import Agents from "./pages/Agents.jsx";
 import Reports from "./pages/Reports.jsx";
 import LeadDetails from "./pages/LeadDetails.jsx";
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/leads", element: <Leads /> },
   { path: "/leads/:id", element: <LeadDetails /> },
-  { path: "/sales", element: <Sales /> },
+  { path: "/status", element: <Status /> },
   { path: "/agents", element: <Agents /> },
   { path: "/reports", element: <Reports /> },
 ]);

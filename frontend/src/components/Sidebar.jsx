@@ -22,13 +22,13 @@ const Sidebar = () => {
               </NavLink>
 
               <NavLink
-                to="/sales"
+                to="/status"
                 className={
                   "btn btn-sidebar text-start p-md-3 p-2 w-100 fs-5 text-white text-opacity-75"
                 }
               >
                 <i className="bi bi-graph-up me-2"></i>{" "}
-                <p className="d-none d-md-inline">Sales</p>
+                <p className="d-none d-md-inline">Status</p>
               </NavLink>
 
               <NavLink

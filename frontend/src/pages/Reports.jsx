@@ -42,7 +42,6 @@ function Reports() {
     ).length;
   });
 
-  console.log(closedLeadsPerAgent);
   const leadsClosedVsPipeline = {
     labels: ["Closed", "Pipeline"],
     datasets: [
