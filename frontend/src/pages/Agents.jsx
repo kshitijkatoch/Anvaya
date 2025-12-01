@@ -2,6 +2,7 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import LeadContext from "../contexts/LeadContext";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 function Agents() {
   const { agents, openAgentModal } = useContext(LeadContext);
@@ -23,9 +24,11 @@ function Agents() {
                       <div className="row">
                         <div className="col-md-6">
                           <b>Agent: </b>
-                          <button className="btn btn-secondary shadow-sm btn-sm opacity-75">
-                            {s.name}
-                          </button>{" "}
+                          <Link to={`/agent/${s._id}`}>
+                            <button className="btn btn-secondary shadow-sm btn-sm opacity-75">
+                              {s.name}
+                            </button>{" "}
+                          </Link>
                         </div>
                         <div className="col-md-6 border-start">
                           <b>Email: </b>

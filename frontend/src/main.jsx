@@ -8,6 +8,7 @@ import Status from "./pages/Status.jsx";
 import Agents from "./pages/Agents.jsx";
 import Reports from "./pages/Reports.jsx";
 import LeadDetails from "./pages/LeadDetails.jsx";
+import AgentDetails from "./pages/AgentDetails.jsx";
 import { LeadProvider } from "./contexts/LeadContext.jsx";
 
 const router = createBrowserRouter([
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
   { path: "/leads/:id", element: <LeadDetails /> },
   { path: "/status", element: <Status /> },
   { path: "/agents", element: <Agents /> },
+  { path: "/agent/:id", element: <AgentDetails /> },
   { path: "/reports", element: <Reports /> },
 ]);
 

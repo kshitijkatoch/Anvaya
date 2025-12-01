@@ -8,7 +8,7 @@ import useFetch from "../useFetch";
 function LeadDetails() {
   const { leads, loading, error } = useContext(LeadContext);
   const [newComment, setNewComment] = useState("");
-const [author, setAuthor] = useState("68f23b7fc4f7e63f4528c4fe");
+  const [author, setAuthor] = useState("68f23b7fc4f7e63f4528c4fe");
 
   const { id: leadID } = useParams();
   const lead = leads?.find((l) => l._id === leadID);
@@ -43,31 +43,30 @@ const [author, setAuthor] = useState("68f23b7fc4f7e63f4528c4fe");
     data: comments = [],
     loading: loadingComments,
     error: errorComments,
-    setData: setComments, 
+    setData: setComments,
   } = useFetch(url);
 
   const handleAddComment = async () => {
-  if (!newComment.trim()) return alert("Comment cannot be empty");
+    if (!newComment.trim()) return alert("Comment cannot be empty");
 
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ commentText: newComment, author })
-    });
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ commentText: newComment, author }),
+      });
 
-    const saved = await res.json();
-    if (!res.ok) return alert(saved.error);
+      const saved = await res.json();
+      if (!res.ok) return alert(saved.error);
 
-    // Update UI instantly
-    setComments(prev => [...prev, saved]);
+      // Update UI instantly
+      setComments((prev) => [...prev, saved]);
 
-    setNewComment("");
-
-  } catch (err) {
-    console.error(err);
-  }
-};
+      setNewComment("");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -122,50 +121,55 @@ const [author, setAuthor] = useState("68f23b7fc4f7e63f4528c4fe");
               <h2 className="p-3 text-center">Comment Section</h2>
               {/* Comments List */}
               <div className="card p-3 mb-3">
-  {loadingComments ? (
-    <p className="text-center"> Loading Comments...</p>
-  ) : comments.length === 0 ? (
-    <h3 className="p-2 text-center text-secondary">No Comments Yet</h3>
-  ) : (
-    comments.map((c, index) => {
-      const formattedDate = new Date(c.createdAt).toLocaleString("en-IN", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      });
+                {loadingComments ? (
+                  <p className="text-center"> Loading Comments...</p>
+                ) : comments.length === 0 ? (
+                  <h3 className="p-2 text-center text-secondary">
+                    No Comments Yet
+                  </h3>
+                ) : (
+                  comments.map((c, index) => {
+                    const formattedDate = new Date(c.createdAt).toLocaleString(
+                      "en-IN",
+                      {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      }
+                    );
 
-      return (
-        <div key={c._id}>
-          <p><b>Author:</b> {c.author}</p>
-          <p><b>Comment:</b> {c.commentText}</p>
-          <p className="text-muted"><small>{formattedDate}</small></p>
-          {index !== comments.length - 1 && <hr />}
-        </div>
-      );
-    })
-  )}
-</div>
-
+                    return (
+                      <div key={c._id}>
+                        <p>
+                          <b>Author:</b> {c.author}
+                        </p>
+                        <p>
+                          <b>Comment:</b> {c.commentText}
+                        </p>
+                        <p className="text-muted">
+                          <small>{formattedDate}</small>
+                        </p>
+                        {index !== comments.length - 1 && <hr />}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
 
               {/* Add New Comment */}
-              
-  <textarea
-    className="form-control mb-3"
-    rows="3"
-    placeholder="Write your comment..."
-    value={newComment}
-    onChange={(e) => setNewComment(e.target.value)}
-  />
+              <textarea
+                className="form-control mb-3"
+                rows="3"
+                placeholder="Write your comment..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
 
-  <button
-    className="btn btn-primary btn-lg col-md-4 my-4 align-self-center"
-    onClick={handleAddComment}
-  >
-    Submit Comment
-  </button>
-
-              {/* <button className="btn btn-primary btn-lg col-md-4 my-4 align-self-center">
+              <button
+                className="btn btn-primary btn-lg col-md-4 my-4 align-self-center"
+                onClick={handleAddComment}
+              >
                 Submit Comment
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
