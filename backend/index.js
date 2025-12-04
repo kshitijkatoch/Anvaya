@@ -162,18 +162,6 @@ app.get("/leads", async (req, res) => {
   }
 });
 
-// app.get("/leads", async (req, res) => {
-//   try {
-//     const filters = {};
-//     if (req.query.status) filters.status = req.query.status;
-
-//     const data = await Lead.find(filters).populate("salesAgent", "name");
-//     res.json(data);
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to fetch the leads." });
-//   }
-// });
-
 // GET by id
 app.get("/leads/:id", async (req, res) => {
   try {
@@ -289,23 +277,6 @@ app.put("/leads/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update lead." });
   }
 });
-
-// app.post("/leads/:id", async (req, res) => {
-//   try {
-//     const updatedLead = await Lead.findByIdAndUpdate(req.params.id, req.body, {
-//       new: true,
-//       runValidators: true,
-//     }).populate("salesAgent", "name");
-
-//     updatedLead        ? res.json({
-//           message: "Lead updated successfully",
-//           lead: updatedLead,
-//         })
-//       : res.status(404).json({ error: "Lead not found." });
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to update lead." });
-//   }
-// });
 
 // DELETE by id
 app.delete("/leads/:id", async (req, res) => {

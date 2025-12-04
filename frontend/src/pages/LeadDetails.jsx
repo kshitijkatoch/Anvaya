@@ -1,6 +1,7 @@
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import LeadContext from "../contexts/LeadContext";
+import EditLeadModal from "../components/EditLeadModal";
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import useFetch from "../useFetch";
@@ -9,6 +10,8 @@ function LeadDetails() {
   const { leads, loading, error } = useContext(LeadContext);
   const [newComment, setNewComment] = useState("");
   const [author, setAuthor] = useState("68f23b7fc4f7e63f4528c4fe");
+  // Edit Lead Modal
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const { id: leadID } = useParams();
   const lead = leads?.find((l) => l._id === leadID);
@@ -112,7 +115,10 @@ function LeadDetails() {
                 </li>
               </ul>
               {/* Edit Detials Button */}
-              <button className="btn btn-primary btn-lg col-md-4 my-4 align-self-center">
+              <button
+                className="btn btn-primary btn-lg col-md-4 my-4 align-self-center"
+                onClick={() => setShowEditModal(true)}
+              >
                 Edit Lead Details
               </button>
               <hr />
@@ -174,6 +180,11 @@ function LeadDetails() {
           </div>
         </div>
       </main>
+      <EditLeadModal
+        show={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        lead={lead}
+      />
     </>
   );
 }

@@ -53,6 +53,25 @@ export const LeadProvider = ({ children }) => {
     0
   );
 
+  // Update Lead
+  const updateLead = async (id, updatedData) => {
+    try {
+      const res = await fetch(`https://anvaya-brown.vercel.app/leads/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      // Update React state properly
+      setLeads((prev) => prev.map((l) => (l._id === id ? data.lead : l)));
+    } catch (err) {
+      console.error("Update failed:", err);
+    }
+  };
+
   // Fetch Agents
   const {
     data: agentsData = [],
@@ -91,6 +110,7 @@ export const LeadProvider = ({ children }) => {
         contactedLeads,
         qualifiedLeads,
         closedLeads,
+        updateLead,
 
         // Agents
         agents,
