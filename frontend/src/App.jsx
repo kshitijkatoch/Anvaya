@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
@@ -69,7 +70,7 @@ function App() {
               <div className="mt-2">
                 <div className="d-flex flex-wrap gap-md-3 gap-1">
                   <h4>Quick Filters:</h4>
-                  <div className="d-flex gap-3">
+                  <div className="d-flex flex-wrap gap-3">
                     <button
                       className={`btn btn-outline-secondary ${
                         activeFilter === "New" ? "active" : ""

@@ -59,14 +59,18 @@ const AddLeadModal = ({ show, onClose }) => {
         body: JSON.stringify(lead),
       });
 
+      const data = await res.json();
+      // if (!res.ok) {
+      //   const errorData = await res.json();
+      //   alert(errorData.error || "Failed to create lead");
+      //   return;
+      // }
       if (!res.ok) {
-        const errorData = await res.json();
-        alert(errorData.error || "Failed to create lead");
+        alert(data.error || "Failed to create lead");
         return;
       }
 
-      const data = await res.json();
-      setLeads((prev) => [...prev, ...data.leads]);
+      setLeads((prev) => [...prev, data.leads[0]]);
       alert("Lead created successfully!");
       onClose();
       setLead({

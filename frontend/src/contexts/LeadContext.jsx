@@ -126,13 +126,20 @@ export const LeadProvider = ({ children }) => {
         closeLeadModal,
         openAgentModal,
         closeAgentModal,
+        showLeadModal,
+        showAgentModal,
       }}
     >
       {children}
 
       {/* Modals */}
-      <AddLeadModal show={showLeadModal} onClose={closeLeadModal} />
-      <AddAgentModal show={showAgentModal} onClose={closeAgentModal} />
+      {showLeadModal && (
+        <AddLeadModal show={showLeadModal} onClose={closeLeadModal} />
+      )}
+
+      {showAgentModal && (
+        <AddAgentModal show={showAgentModal} onClose={closeAgentModal} />
+      )}
     </LeadContext.Provider>
   );
 };

@@ -35,10 +35,10 @@ const AddAgentModal = ({ show, onClose }) => {
         return;
       }
 
-      const addedAgent = data.agents[0];
+      const addedAgent = data.agents;
 
       // Update UI immediately
-      setAgents((prev) => [addedAgent, ...prev]);
+      setAgents((prev) => [addedAgent[0], ...prev]);
 
       alert("Sales Agent added!");
 
