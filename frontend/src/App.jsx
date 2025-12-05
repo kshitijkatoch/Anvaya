@@ -31,21 +31,25 @@ function App() {
             <div className="container mw-700 d-flex flex-column justify-content-center">
               <h2 className="p-4 text-center">Main Content</h2>
               {/* Leads */}
-              <div className="d-flex flex-wrap gap-3 my-2">
-                {loading && <p>Loading...</p>}
-                {error && <p>Error loading data.</p>}
-                {leads?.map((l) => (
-                  <Link to={`/leads/${l._id}`}>
-                    <button
-                      key={l._id}
-                      className="btn btn-lg btn-outline-info"
-                      style={{ "--bs-btn-hover-color": "#fff" }}
-                    >
-                      {l.name}
-                    </button>
-                  </Link>
-                ))}
-              </div>
+              {loading ? (
+                <p className="text-center">Loading...</p>
+              ) : error ? (
+                <p className="text-center">Error loading data.</p>
+              ) : (
+                <div className="d-flex flex-wrap gap-3 my-2">
+                  {leads?.map((l) => (
+                    <Link to={`/leads/${l._id}`} key={l._id}>
+                      <button
+                        className="btn btn-outline-info"
+                        style={{ "--bs-btn-hover-color": "#fff" }}
+                      >
+                        {l.name}
+                      </button>
+                    </Link>
+                  ))}
+                </div>
+              )}
+
               <hr />
               {/* Status */}
               <div className="mb-2">
@@ -85,6 +89,16 @@ function App() {
                       }}
                     >
                       Contacted
+                    </button>
+                    <button
+                      className={`btn btn-outline-secondary ${
+                        activeFilter === "Qualified" ? "active" : ""
+                      }`}
+                      onClick={() => {
+                        setFilter("Qualified"), setActiveFilter("Qualified");
+                      }}
+                    >
+                      Qualified
                     </button>
                     <button
                       className={`btn btn-outline-secondary ${
