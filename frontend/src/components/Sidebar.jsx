@@ -50,6 +50,16 @@ const Sidebar = () => {
                 <i className="bi bi-file-earmark-bar-graph me-2"></i>{" "}
                 <p className="d-none d-md-inline">Reports</p>
               </NavLink>
+
+              <NavLink
+                to="/settings"
+                className={
+                  "btn btn-sidebar text-start p-md-3 p-2 w-100 fs-5 text-white text-opacity-75"
+                }
+              >
+                <i className="bi bi-gear me-2"></i>{" "}
+                <p className="d-none d-md-inline">Settings</p>
+              </NavLink>
             </>
           ) : (
             <NavLink

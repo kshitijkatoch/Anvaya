@@ -332,6 +332,24 @@ app.get("/agents", async (req, res) => {
   }
 });
 
+// DELETE agent by id
+app.delete("/agents/:id", async (req, res) => {
+  try {
+    const agent = await SalesAgent.findByIdAndDelete(req.params.id);
+
+    if (!agent) {
+      return res.status(404).json({ error: "Sales agent not found." });
+    }
+
+    res.status(200).json({
+      message: "Sales agent deleted successfully.",
+      deleted: agent,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete sales agent." });
+  }
+});
+
 // ===== Comment Routes ===== //
 // POST
 app.post("/leads/:id/comments", async (req, res) => {
@@ -414,9 +432,7 @@ app.delete("/leads/:leadId/comments/:commentId", async (req, res) => {
       !mongoose.Types.ObjectId.isValid(leadId) ||
       !mongoose.Types.ObjectId.isValid(commentId)
     ) {
-      return res
-        .status(400)
-        .json({ error: "Invalid Lead ID or Comment ID." });
+      return res.status(400).json({ error: "Invalid Lead ID or Comment ID." });
     }
 
     // Ensure comment belongs to this lead
@@ -442,7 +458,6 @@ app.delete("/leads/:leadId/comments/:commentId", async (req, res) => {
     res.status(500).json({ error: "Failed to delete the comment." });
   }
 });
-
 
 // ===== Report API Routes ===== //
 // GET report last week

@@ -97,6 +97,33 @@ export const LeadProvider = ({ children }) => {
     error: pipelineError,
   } = useFetch("https://anvaya-brown.vercel.app/report/pipeline");
 
+  // Delete lead and agent
+  const deleteLead = async (id) => {
+    const res = await fetch(`https://anvaya-brown.vercel.app/leads/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      console.error("Failed to delete lead");
+      return;
+    }
+
+    setLeads((prev) => prev.filter((l) => l._id !== id));
+  };
+
+  const deleteAgent = async (id) => {
+    const res = await fetch(`https://anvaya-brown.vercel.app/agents/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      console.error("Failed to delete agent");
+      return;
+    }
+
+    setAgents((prev) => prev.filter((a) => a._id !== id));
+  };
+
   return (
     <LeadContext.Provider
       value={{
@@ -120,6 +147,10 @@ export const LeadProvider = ({ children }) => {
 
         // Pipeline
         totalPipelineLeads: pipelineData?.totalPipelineLeads || 0,
+
+        // Delete
+        deleteLead,
+        deleteAgent,
 
         // Modals
         openLeadModal,
