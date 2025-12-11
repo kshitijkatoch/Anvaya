@@ -7,9 +7,9 @@ import { useParams } from "react-router-dom";
 import useFetch from "../useFetch";
 
 function LeadDetails() {
-  const { leads, loading, error } = useContext(LeadContext);
+  const { leads, loading, error, agents } = useContext(LeadContext);
   const [newComment, setNewComment] = useState("");
-  const [author, setAuthor] = useState("68f23b7fc4f7e63f4528c4fe");
+  const [author, setAuthor] = useState("");
   // Edit Lead Modal
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -51,6 +51,7 @@ function LeadDetails() {
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return alert("Comment cannot be empty");
+    if (!author) return alert("Please select an agent");
 
     try {
       const res = await fetch(url, {
@@ -170,12 +171,30 @@ function LeadDetails() {
                 onChange={(e) => setNewComment(e.target.value)}
               />
 
-              <button
-                className="btn btn-primary btn-lg col-md-4 my-4 align-self-center"
-                onClick={handleAddComment}
-              >
-                Submit Comment
-              </button>
+              <div className="row justify-content-center">
+                <div className="col-md-4">
+                  <select
+                    class="form-select form-select-lg my-md-4 my-2"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                  >
+                    <option value="">Select Author</option>
+                    {agents.map((a) => (
+                      <option key={a._id} value={a._id}>
+                        {a.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-md-4">
+                  <button
+                    className="btn btn-primary btn-lg my-md-4 my-2 align-self-center w-100"
+                    onClick={handleAddComment}
+                  >
+                    Submit Comment
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
