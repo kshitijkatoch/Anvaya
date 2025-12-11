@@ -50,3 +50,16 @@
   max-width: 500px;
   margin: auto;
 }
+
+.bar-chart-wrapper {
+  width: 100%;
+  max-width: 500px;
+  height: 200px;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  .bar-chart-wrapper {
+    height: 250px;
+  }
+}

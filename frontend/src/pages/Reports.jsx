@@ -23,6 +23,19 @@ ChartJS.register(
   BarElement
 );
 
+const barOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        stepSize: 1,
+      },
+    },
+  },
+};
+
 function Reports() {
   const {
     leads,
@@ -112,8 +125,8 @@ function Reports() {
                 <div className="col-md-12">
                   {/* -------- Bar Chart -------- */}
                   <div className="report-card shadow-sm p-4 mb-4 rounded bg-white">
-                    <div className="chart-wrapper">
-                      <Bar data={leadsClosedByAgent} />
+                    <div className="bar-chart-wrapper">
+                      <Bar data={leadsClosedByAgent} options={barOptions} />
                     </div>
                     <h5 className="text-center pt-3">
                       Leads Closed by Sales Agent
