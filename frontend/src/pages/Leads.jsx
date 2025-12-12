@@ -23,9 +23,7 @@ function Leads() {
 
     // ---- FILTER BY AGENT ----
     if (selectedAgent) {
-      filtered = filtered.filter(
-        (l) => l.salesAgent?._id === selectedAgent
-      );
+      filtered = filtered.filter((l) => l.salesAgent?._id === selectedAgent);
     }
 
     // ---- SORTING ----
@@ -57,19 +55,20 @@ function Leads() {
 
                 <ul className="list-group">
                   {filteredLeads.map((l) => (
-                    <li key={l._id} className="list-group-item gap-2 py-3 d-flex justify-content-between flex-wrap">
+                    <li
+                      key={l._id}
+                      className="list-group-item gap-2 py-3 d-flex justify-content-between flex-wrap"
+                    >
                       <div>
-                      <b>{l.name}</b>{" "}
-                       [{l.salesAgent?.name || "Unassigned"}]
+                        <b>{l.name}</b> [{l.salesAgent?.name || "Unassigned"}]
                       </div>
                       <div className="d-flex gap-md-3 gap-2">
-                      <button className="btn btn-secondary btn-sm opacity-75 mw-80">
-                        {l.priority || "N/A"}
-                      </button>
-                      <button className="btn btn-success btn-sm opacity-75 mw-80">
-                        {l.status || "N/A"}
-                      </button>
-
+                        <button className="btn btn-secondary btn-sm opacity-75 mw-80">
+                          {l.priority || "N/A"}
+                        </button>
+                        <button className="btn btn-success btn-sm opacity-75 mw-80">
+                          {l.status || "N/A"}
+                        </button>
                       </div>
                     </li>
                   ))}
@@ -81,45 +80,37 @@ function Leads() {
                 <div className="d-flex flex-wrap align-items-center gap-md-3 gap-1">
                   <h5>Filters:</h5>
                   <div className="d-flex flex-wrap gap-3">
-                   {/* STATUS DROPDOWN */}
-  <select
-    className="form-select w-auto"
-    value={selectedStatus}
-    onChange={(e) => setSelectedStatus(e.target.value)}
-  >
-    <option value="">All Status</option>
-    <option value="New">New</option>
-    <option value="Contacted">Contacted</option>
-    <option value="Qualified">Qualified</option>
-    <option value="Closed">Closed</option>
-  </select>
+                    {/* STATUS DROPDOWN */}
+                    <select
+                      className="form-select w-auto"
+                      value={selectedStatus}
+                      onChange={(e) => setSelectedStatus(e.target.value)}
+                    >
+                      <option value="">All Status</option>
+                      <option value="New">New</option>
+                      <option value="Contacted">Contacted</option>
+                      <option value="Qualified">Qualified</option>
+                      <option value="Closed">Closed</option>
+                    </select>
 
-  {/* SALES AGENT DROPDOWN */}
-  <select
-    className="form-select w-auto"
-    value={selectedAgent}
-    onChange={(e) => setSelectedAgent(e.target.value)}
-  >
-    <option value="">All Agents</option>
-    {agents.map((a) => (
-      <option key={a._id} value={a._id}>
-        {a.name}
-      </option>
-    ))}
-  </select>
+                    {/* SALES AGENT DROPDOWN */}
+                    <select
+                      className="form-select w-auto"
+                      value={selectedAgent}
+                      onChange={(e) => setSelectedAgent(e.target.value)}
+                    >
+                      <option value="">All Agents</option>
+                      {agents.map((a) => (
+                        <option key={a._id} value={a._id}>
+                          {a.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 {/* Sort */}
                 <div className="d-flex flex-wrap align-items-center gap-md-3 gap-1">
                   <h5>Sort by:</h5>
-                  {/* <div className="d-flex gap-3">
-                    <button className="btn btn-outline-secondary">
-                      Priority
-                    </button>
-                    <button className="btn btn-outline-secondary">
-                      Time to Close
-                    </button>
-                  </div> */}
                   <div className="d-flex gap-3">
                     <button
                       className={`btn btn-outline-secondary ${

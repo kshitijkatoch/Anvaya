@@ -3,7 +3,8 @@ import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import LeadContext from "../contexts/LeadContext";
 
 const EditLeadModal = ({ show, onClose, lead }) => {
-  const { agents, updateLead } = useContext(LeadContext);
+  const { agents, updateLead, notifySuccess, notifyError } =
+    useContext(LeadContext);
 
   const [enums, setEnums] = useState({
     sources: [],
@@ -80,10 +81,10 @@ const EditLeadModal = ({ show, onClose, lead }) => {
 
     try {
       await updateLead(lead._id, updatedData);
-      alert("Lead updated successfully!");
+      notifySuccess("Lead updated successfully!");
       onClose();
     } catch (error) {
-      alert("Failed to update lead");
+      notifyError("Failed to update lead");
       console.error(error);
     } finally {
       setSubmitting(false);

@@ -3,7 +3,8 @@ import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import LeadContext from "../contexts/LeadContext";
 
 const AddLeadModal = ({ show, onClose }) => {
-  const { agents, setLeads } = useContext(LeadContext);
+  const { agents, setLeads, notifySuccess, notifyError } =
+    useContext(LeadContext);
 
   const [enums, setEnums] = useState({
     sources: [],
@@ -60,18 +61,13 @@ const AddLeadModal = ({ show, onClose }) => {
       });
 
       const data = await res.json();
-      // if (!res.ok) {
-      //   const errorData = await res.json();
-      //   alert(errorData.error || "Failed to create lead");
-      //   return;
-      // }
       if (!res.ok) {
-        alert(data.error || "Failed to create lead");
+        notifyError(data.error || "Failed to create lead");
         return;
       }
 
       setLeads((prev) => [...prev, data.leads[0]]);
-      alert("Lead created successfully!");
+      notifySuccess("Lead created successfully!");
       onClose();
       setLead({
         name: "",
@@ -84,7 +80,7 @@ const AddLeadModal = ({ show, onClose }) => {
       });
     } catch (err) {
       console.error("Error submitting lead:", err);
-      alert("Something went wrong!");
+      notifyError("Something went wrong!");
     } finally {
       setSubmitting(false);
     }

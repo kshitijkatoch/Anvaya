@@ -3,7 +3,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import LeadContext from "../contexts/LeadContext";
 
 const AddAgentModal = ({ show, onClose }) => {
-  const { setAgents } = useContext(LeadContext);
+  const { setAgents, notifySuccess, notifyError } = useContext(LeadContext);
 
   const [agent, setAgent] = useState({
     name: "",
@@ -31,7 +31,7 @@ const AddAgentModal = ({ show, onClose }) => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.error || "Failed to add agent");
+        notifyError(data.error || "Failed to add agent");
         return;
       }
 
@@ -40,14 +40,14 @@ const AddAgentModal = ({ show, onClose }) => {
       // Update UI immediately
       setAgents((prev) => [addedAgent[0], ...prev]);
 
-      alert("Sales Agent added!");
+      notifySuccess("Sales Agent added!");
 
       // Reset form & close modal
       setAgent({ name: "", email: "" });
       onClose();
     } catch (err) {
       console.error("Error adding agent:", err);
-      alert("Something went wrong!");
+      notifyError("Something went wrong!");
     } finally {
       setSubmitting(false);
     }

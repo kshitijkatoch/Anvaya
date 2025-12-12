@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import useFetch from "../useFetch";
 import AddLeadModal from "../components/AddLeadModal";
 import AddAgentModal from "../components/AddAgentModal";
+import { toast } from "react-toastify";
 
 const LeadContext = createContext();
 
@@ -15,6 +16,10 @@ export const LeadProvider = ({ children }) => {
   const [showLeadModal, setShowLeadModal] = useState(false);
   const openLeadModal = () => setShowLeadModal(true);
   const closeLeadModal = () => setShowLeadModal(false);
+
+  // Toasts
+  const notifySuccess = (msg) => toast.success(msg);
+  const notifyError = (msg) => toast.error(msg);
 
   useEffect(() => {
     const fetchLeads = async () => {
@@ -31,7 +36,7 @@ export const LeadProvider = ({ children }) => {
         const data = await res.json();
         setLeads(data);
       } catch (err) {
-        setError("Failed to fetch leads");
+        notifyError("Failed to load leads");
       } finally {
         setLoading(false);
       }
@@ -65,10 +70,10 @@ export const LeadProvider = ({ children }) => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
-      // Update React state properly
       setLeads((prev) => prev.map((l) => (l._id === id ? data.lead : l)));
+      notifySuccess("Lead updated successfully!");
     } catch (err) {
-      console.error("Update failed:", err);
+      notifyError("Failed to update lead");
     }
   };
 
@@ -99,29 +104,39 @@ export const LeadProvider = ({ children }) => {
 
   // Delete lead and agent
   const deleteLead = async (id) => {
-    const res = await fetch(`https://anvaya-brown.vercel.app/leads/${id}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`https://anvaya-brown.vercel.app/leads/${id}`, {
+        method: "DELETE",
+      });
 
-    if (!res.ok) {
-      console.error("Failed to delete lead");
-      return;
+      if (!res.ok) {
+        notifyError("Failed to delete lead");
+        return;
+      }
+
+      setLeads((prev) => prev.filter((l) => l._id !== id));
+      notifySuccess("Lead deleted successfully!");
+    } catch (error) {
+      notifyError("Something went wrong while deleting");
     }
-
-    setLeads((prev) => prev.filter((l) => l._id !== id));
   };
 
   const deleteAgent = async (id) => {
-    const res = await fetch(`https://anvaya-brown.vercel.app/agents/${id}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`https://anvaya-brown.vercel.app/agents/${id}`, {
+        method: "DELETE",
+      });
 
-    if (!res.ok) {
-      console.error("Failed to delete agent");
-      return;
+      if (!res.ok) {
+        notifyError("Failed to delete agent");
+        return;
+      }
+
+      setAgents((prev) => prev.filter((a) => a._id !== id));
+      notifySuccess("Agent deleted successfully!");
+    } catch (error) {
+      notifyError("Something went wrong while deleting");
     }
-
-    setAgents((prev) => prev.filter((a) => a._id !== id));
   };
 
   return (
@@ -159,6 +174,10 @@ export const LeadProvider = ({ children }) => {
         closeAgentModal,
         showLeadModal,
         showAgentModal,
+
+        // Toasts
+        notifySuccess,
+        notifyError,
       }}
     >
       {children}

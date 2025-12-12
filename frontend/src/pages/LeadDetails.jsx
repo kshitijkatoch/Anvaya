@@ -4,6 +4,8 @@ import LeadContext from "../contexts/LeadContext";
 import EditLeadModal from "../components/EditLeadModal";
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import useFetch from "../useFetch";
 
 function LeadDetails() {
@@ -50,8 +52,8 @@ function LeadDetails() {
   } = useFetch(url);
 
   const handleAddComment = async () => {
-    if (!newComment.trim()) return alert("Comment cannot be empty");
-    if (!author) return alert("Please select an agent");
+    if (!newComment.trim()) return toast.error("Comment cannot be empty");
+    if (!author) return toast.error("Please select an agent");
 
     try {
       const res = await fetch(url, {
@@ -61,7 +63,7 @@ function LeadDetails() {
       });
 
       const saved = await res.json();
-      if (!res.ok) return alert(saved.error);
+      if (!res.ok) return toast.error(saved.error);
 
       // Update UI instantly
       setComments((prev) => [...prev, saved]);
@@ -79,6 +81,7 @@ function LeadDetails() {
         <div className="row w-100">
           <Sidebar />
           <div className="col-md-10 col-9 ps-0">
+            <ToastContainer position="top-center" theme="colored" />
             <div className="container mw-700 d-flex flex-column justify-content-center">
               <h2 className="p-3 text-center">Lead Details</h2>
 
