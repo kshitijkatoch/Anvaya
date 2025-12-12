@@ -39,6 +39,10 @@
   max-width: 800px;
 }
 
+.mw-80{
+  min-width: 80px;
+}
+
 /* Charts CSS */
 .report-card {
   max-width: 800px;
