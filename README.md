@@ -11,6 +11,19 @@ Built with a React frontend, Express/Node backend, MongoDB database, and Context
 
 ---
 
+## Screenshots
+- ### Dashboard
+<img width="1824" height="959" alt="ANVAYA-Dashboard" src="https://github.com/user-attachments/assets/26d27b06-553a-4a68-a0ca-19d9176bbbd3" />
+
+- ### Lead List
+<img width="1824" height="1065" alt="ANVAYA-Lead-List" src="https://github.com/user-attachments/assets/f5419759-b57a-450b-906b-0f9fc0ca4082" />
+
+- ### Lead Details
+<img width="1824" height="1463" alt="ANVAYA-Lead-Details" src="https://github.com/user-attachments/assets/f1f82901-7287-41c2-97d4-8512e09b3f6e" />
+
+
+---
+
 ## Quick Start
 
 ```
@@ -19,6 +32,8 @@ cd Anvaya
 npm install
 npm run dev      # or `npm start` / `yarn dev`
 ```
+
+---
 
 ## Technologies
 - React JS
@@ -29,6 +44,8 @@ npm run dev      # or `npm start` / `yarn dev`
 - MongoDB
 - REST APIs
 - JWT
+
+---
 
 ## Features
 **Dashboard**
@@ -52,6 +69,15 @@ npm run dev      # or `npm start` / `yarn dev`
 - Fully responsive UI for desktop and mobile
 - Smooth user experience across devices
 
+
+---
+## Environment Setup
+```
+PORT=5000
+MONGODB_URL=your_mongodb_connection_string
+```
+---
+
 ## API Reference
 
 ### **GET	/api/leads**<br>	 
@@ -74,6 +100,6 @@ Update an existing lead<br>
 Sample Response:<br> 
 ```{ "_id": "...", "status": "Qualified" }```
 
-
+---
 ## Contact
 For bugs or feature requests, please reach out to kshitijkatoch213@gmail.com
